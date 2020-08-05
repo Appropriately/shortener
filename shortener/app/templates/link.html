@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="py-5">
+  <div class="text-center">
+    <h2>Oh no!</h2>
+    <h4>The link '{{request._link}}' appears to have gone...</h4>
+  </div>
+</section>
+
+<!--
+  Information on the request
+  TODO: Remove this after testing this functionality
+-->
+<section class="py-5">
+  <div class="container">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Attribute</th>
+          <th scope="col">Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for attribute, value in request.__dict__.items() -%}
+          <tr>
+            <td>{{attribute}}</td>
+            <td>{{value}}</td>
+          </tr>
+        {%- endfor -%}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

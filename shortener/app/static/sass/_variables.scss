@@ -1,0 +1,21 @@
+// Allows control over website theme, including the primary/secondary colours and logo.
+
+// Font Awesome, unless heavy modification has occurred it is recommended to leave this as is.
+$fa-font-path: "../fonts";
+
+// Brand information
+$primary: #E28C05;
+$secondary: #5F6062;
+$logo: url('/static/images/default.jpeg');
+
+// Dynamically generate grey colours based on a base colour.
+$base-grey: #9ca3ab;
+$gray-100: lighten($base-grey, 36%);
+$gray-200: lighten($base-grey, 27%);
+$gray-300: lighten($base-grey, 18%);
+$gray-400: lighten($base-grey, 9%);
+$gray-500: $base-grey;
+$gray-600: darken($base-grey, 9%);
+$gray-700: darken($base-grey, 18%);
+$gray-800: darken($base-grey, 27%);
+$gray-900: darken($base-grey, 36%);

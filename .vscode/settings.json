@@ -1,0 +1,18 @@
+{
+  "editor.rulers": [110],
+  "editor.autoIndent": "advanced",
+  "editor.trimAutoWhitespace": true,
+  "editor.tabSize": 2,
+  "editor.detectIndentation": false,
+  "python.linting.enabled": true,
+  "python.linting.pylintArgs": [
+    "--load-plugins",
+    "pylint-flask"
+  ],
+  "python.linting.pylintEnabled": false,
+  "python.linting.flake8Enabled": true,
+  "[python]": {
+    "editor.tabSize": 4,
+    "editor.rulers": [80],
+  }
+}

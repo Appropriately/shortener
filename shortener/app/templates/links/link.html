@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="py-5">
+  <div class="container">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Attribute</th>
+          <th scope="col">Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for attribute, value in link.__dict__.items() -%}
+        <tr>
+          <td>{{attribute}}</td>
+          <td>{{value}}</td>
+        </tr>
+        {%- endfor -%}
+        <tr>
+          <td>Number of Requests</td>
+          <td>{{link.requests|count}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

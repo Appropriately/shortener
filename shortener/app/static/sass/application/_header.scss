@@ -1,0 +1,14 @@
+header {
+  nav {
+    background-color: $gray-100;
+  }
+}
+
+#nav-logo {
+  background-image: $logo;
+  height: 30px;
+  width: 30px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}

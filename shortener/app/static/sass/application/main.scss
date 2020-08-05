@@ -1,0 +1,23 @@
+@import "variables";
+@import "cards";
+@import "header";
+
+body {
+  background-color: $gray-200;
+}
+
+footer {
+  background-color: $gray-100;
+}
+
+nav[aria-label="breadcrumb"] {
+  ol {
+    background-color: $gray-200;
+    border: 1px solid $gray-300;
+    border-bottom: 0;
+  }
+}
+
+main {
+  min-height: 500px;
+}

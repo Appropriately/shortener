@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>{{ config.APP_NAME }}</title>
+  <!-- meta -->
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  {% block meta %}{% endblock %}
+  <!-- CSS only -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+    integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/application.css') }}">
+  {% block links %}{% endblock %}
+</head>
+
+<body>
+  <header>
+    <nav class="navbar navbar-light">
+      <div class="container">
+        {%- if current_user.is_authenticated -%}
+          <a class="navbar-brand" href="{{ url_for('links.dashboard') }}">
+        {%- else -%}
+          <a class="navbar-brand" href="{{ url_for('main.index') }}">
+        {%- endif -%}
+          <div id="nav-logo" class="d-inline-block align-top"></div>
+          <span class="ml-1">{{ config.APP_NAME }}</span>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      {% block hero %}{% endblock %}
+
+      <div class="py-2 container">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            {%- if breadcrumbs -%}
+              {%- for breadcrumb in breadcrumbs -%}
+                {%- if loop.last -%}
+                  <li class="breadcrumb-item active" aria-current="page">{{ breadcrumb.text }}</li>
+                {%- else -%}
+                  <li class="breadcrumb-item"><a href="{{ breadcrumb.url }}">{{ breadcrumb.text }}</a></li>
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endif -%}
+          </ol>
+        </nav>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+      </div>
+    </section>
+    {% block content %}{% endblock %}
+  </main>
+
+
+  <!-- JavaScript and dependencies -->
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js"
+    integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
+    crossorigin="anonymous"></script>
+  {% block scripts %}{% endblock %}
+</body>
+
+</html>

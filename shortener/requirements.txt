@@ -1,0 +1,17 @@
+click
+email-validator
+Flask
+Flask-Breadcrumbs
+Flask-Login
+Flask-SQLAlchemy
+Flask-WTF
+itsdangerous
+Jinja2
+libsass
+MarkupSafe
+psycopg2
+python-dotenv
+pylint-flask
+SQLAlchemy
+Werkzeug
+WTForms

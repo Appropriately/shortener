@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+{%- if current_user.is_authenticated -%}
+  <section>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 p-2">
+          <div class="card p-3 align-middle">
+            <h3>Dashboard</h3>
+            <p class="lead">Manage links and marketing.</p>
+            <a class="btn btn-primary" href="{{ url_for('links.dashboard') }}">Go to dashboard</a>
+          </div>
+        </div>
+        <div class="col-md-4 p-2 d-none d-md-flex">
+          <i class="fas fa-chart-bar fa-10x m-auto text-secondary"></i>
+        </div>
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+{% endblock %}
