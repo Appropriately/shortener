@@ -8,8 +8,7 @@ class BaseConfig(object):
 
     APP_NAME = 'Shortener'
     DEBUG_TB_ENABLED = False
-    SECRET_KEY = os.environ.get(
-        'SECRET_KEY', 'Ensure you set a secret key, this is important!')
+    SECRET_KEY = os.environ.get('SECRET_KEY')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     WTF_CSRF_ENABLED = False
 
