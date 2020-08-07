@@ -25,10 +25,10 @@ def dashboard():
         link = Link(link=Link.unique_link(), redirect=form.redirect.data)
         link.save()
 
-        url = url_for('main.link', route=link.link, _external=True)
-        flash(f"Link with the url '{ url }' was generated.", 'success')
-
+        flash(f"Url '{ link.full_link() }' was generated.", 'success')
         return redirect(url_for('links.link', value=link.id), code=307)
     elif form.is_submitted():
         flash('The given URL was invalid.', 'danger')
-    return render_template('links/dashboard.html', form=form)
+
+    links = Link.query.all()[:5]
+    return render_template('links/dashboard.html', form=form, links=links)

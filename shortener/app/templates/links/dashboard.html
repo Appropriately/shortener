@@ -14,4 +14,37 @@
     </form>
   </div>
 </section>
+
+<section>
+  <div class="container py-4">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col" class="d-none d-md-table-cell">#</th>
+          <th scope="col">Route</th>
+          <th scope="col" class="d-none d-md-table-cell">URL</th>
+          <th scope="col" class="d-none d-md-table-cell">Expiration</th>
+          <th scope="col">Hits</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for link in links -%}
+        <tr class="{{ '' if link.activated else 'inactive' }}">
+          <td scope="row" class="d-none d-md-table-cell">{{ loop.index }}</td>
+          <td>{{ link.link }}</td>
+          <td class="d-none d-md-table-cell">
+            <a href="{{ link.redirect }}">{{ link.short_redirect() }}...</a>
+          </td>
+          <td class="d-none d-md-table-cell">{{ link.expiration }}</td>
+          <td>{{ link.requests|count }}</td>
+          <td>
+            <a href="{{ url_for('links.link', value=link.id) }}">Details</a>
+          </td>
+        </tr>
+        {%- endfor -%}
+      </tbody>
+    </table>
+  </div>
+</section>
 {% endblock %}

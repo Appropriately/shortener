@@ -3,10 +3,12 @@ from ..utils import ModelMixin
 
 from sqlalchemy import and_
 from sqlalchemy.orm import validates
+from flask import url_for
 from flask_sqlalchemy import BaseQuery
 from datetime import datetime
 from random import choice
 from string import hexdigits
+from urllib.parse import urlparse
 
 
 class Link(db.Model, ModelMixin):
@@ -44,6 +46,25 @@ class Link(db.Model, ModelMixin):
             raise AssertionError(f'The link { value } is already in use')
 
         return value
+
+    def short_redirect(self) -> str:
+        """The domain information for the redirect. Useful for quickly
+        referencing a redirect.
+
+        Returns:
+            str: the domain for the redirect.
+        """
+        parsed = urlparse(self.redirect)
+        return parsed.netloc
+
+    def full_link(self) -> str:
+        """Returns the full, external link; includes domain and port
+        information.
+
+        Returns:
+            str: url for current link.
+        """
+        return url_for('main.link', route=self.link, _external=True)
 
     def __str__(self) -> str:
         return f'<Link: { self.link } -> { self.redirect }>'

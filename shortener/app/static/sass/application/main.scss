@@ -21,3 +21,9 @@ nav[aria-label="breadcrumb"] {
 main {
   min-height: 500px;
 }
+
+table {
+  .inactive {
+    opacity: 0.5;
+  }
+}
