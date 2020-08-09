@@ -34,7 +34,9 @@
 
 <section>
   <div class="container py-5">
-    {% include "links/_form.html" %}
+    {% with action=url_for('links.link', value=link.id) %}
+      {% include "links/_form.html" %}
+    {% endwith %}
   </div>
 </section>
 {% endblock %}

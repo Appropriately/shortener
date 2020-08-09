@@ -5,11 +5,14 @@
   <div class="container">
     <form class="row py-4 align-items-center d-flex" role="form" action="{{ url_for('links.dashboard') }}" method="post">
       <h2 style="text-align: center;">Generate a quick link</h2>
-      <div class="col-lg-10 py-2">
+      <div class="col-lg-8 py-2">
         {{ form.redirect(class='form-control form-control-lg', placeholder='Example: https://github.com/appropriately') }}
       </div>
       <div class="col-lg-2 py-2">
         {{ form.submit(class='btn btn-lg btn-primary btn-block') }}
+      </div>
+      <div class="col-lg-2 py-2">
+        <a href="{{ url_for('links.new') }}" class="btn btn-lg btn-secondary btn-block">Advanced</a>
       </div>
     </form>
   </div>

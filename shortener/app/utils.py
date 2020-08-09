@@ -15,6 +15,16 @@ class ModelMixin(object):
         db.session.commit()
         return self
 
+    def update(self):
+        """Commits changes to the current object, without adding it to the
+        session.
+
+        Returns:
+            Object: an instance of the saved object.
+        """
+        db.session.commit()
+        return self
+
     def delete(self):
         """Performs a delete operation on the appropriate database row.
 

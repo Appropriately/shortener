@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section>
+  <div class="container py-4">
+    <h2 class="m-0">New <span class="text-muted">Link</span></h2>
+  </div>
+</section>
+
+<section>
+  <div class="container py-5">
+    {% with action=url_for('links.new'), back=url_for('links.dashboard') %}
+      {% include "links/_form.html" %}
+    {% endwith %}
+  </div>
+</section>
+{% endblock %}
