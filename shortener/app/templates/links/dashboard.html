@@ -30,7 +30,7 @@
       </thead>
       <tbody>
         {%- for link in links -%}
-        <tr class="{{ '' if link.activated else 'inactive' }}">
+        <tr class="{{ '' if link.is_active() else 'inactive' }}">
           <td scope="row" class="d-none d-md-table-cell">{{ loop.index }}</td>
           <td>{{ link.link }}</td>
           <td class="d-none d-md-table-cell">

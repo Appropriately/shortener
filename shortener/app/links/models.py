@@ -1,13 +1,13 @@
 from .. import db
 from ..utils import ModelMixin
 
-from sqlalchemy import and_
+from sqlalchemy import or_
 from sqlalchemy.orm import validates
 from flask import url_for
 from flask_sqlalchemy import BaseQuery
 from datetime import datetime
 from random import choice
-from string import hexdigits
+from string import digits, ascii_letters
 from urllib.parse import urlparse
 
 
@@ -18,6 +18,7 @@ class Link(db.Model, ModelMixin):
     __table_args__ = {'extend_existing': True}
 
     LINK_SIZE = 6
+    VALID_CHARS = digits + ascii_letters + '-_'
 
     id = db.Column(db.Integer, primary_key=True)
     requests = db.relationship('Request', backref='links', lazy=True)
@@ -28,24 +29,34 @@ class Link(db.Model, ModelMixin):
     created_at = db.Column(db.DateTime, default=datetime.now)
 
     @validates('link')
-    def validate_link(self, key: str, value: str) -> str:
+    def validate_link(self, key: str, link: str) -> str:
         """Perform validation on a link, ensuring that it is the only
         allowed if there are no other similar links validated.
 
         Args:
             key (str): will always be 'link' in this context.
-            value (str): the value that needs validation.
+            link (str): the link that needs validation.
 
         Raises:
-            AssertionError: raised if the link is already in use.
+            AssertionError: raised if the link is already in use, or contains
+                illegal characters.
 
         Returns:
-            str: the value that just had validation performed.
+            str: the link that just had validation performed.
         """
-        if Link.active_links_with_value(value).first():
-            raise AssertionError(f'The link { value } is already in use')
+        if Link.active_with_link(link).filter(Link.id != self.id).first():
+            raise AssertionError(f'The link { link } is already in use')
 
-        return value
+        if not all(char in Link.VALID_CHARS for char in link):
+            raise AssertionError('The link contains invalid characters')
+
+        return link
+
+    def is_expired(self) -> bool:
+        return self.expiration and datetime.now() >= self.expiration
+
+    def is_active(self) -> bool:
+        return self.activated and not self.is_expired()
 
     def short_redirect(self) -> str:
         """The domain information for the redirect. Useful for quickly
@@ -58,8 +69,8 @@ class Link(db.Model, ModelMixin):
         return parsed.netloc
 
     def full_link(self) -> str:
-        """Returns the full, external link; includes domain and port
-        information.
+        """Returns the full, external link to the redirect; includes domain and
+        port information.
 
         Returns:
             str: url for current link.
@@ -83,8 +94,34 @@ class Link(db.Model, ModelMixin):
         return Link.query.filter(Link.id == field)
 
     @staticmethod
-    def active_links_with_value(field) -> BaseQuery:
-        return Link.query.filter(and_(Link.link == field, Link.activated))
+    def active() -> BaseQuery:
+        """Returns an SQLAlchemy query, with only active links returned.
+
+        Returns:
+            BaseQuery: a query instance that can include further filters.
+        """
+        return Link.query.filter(Link.activated)
+
+    @staticmethod
+    def active_with_link(route: str, include_expiration=False) -> BaseQuery:
+        """Returns an SQLAlchemy query of all active links with a particular
+        route value. Includes the option to look for expired links.
+
+        Args:
+            route (str): a particular link to search for.
+            include_expiration (bool, optional): whether the query should
+                include expired links. Defaults to False.
+
+        Returns:
+            BaseQuery: a query instance that can include further filters.
+        """
+        query = Link.active().filter(Link.link == route)
+
+        if include_expiration:
+            check = Link.expiration.is_(None), Link.expiration < datetime.now()
+            query = query.filter(or_(*check))
+
+        return query
 
     @staticmethod
     def unique_link() -> str:
@@ -94,10 +131,12 @@ class Link(db.Model, ModelMixin):
         Returns:
             str: a randomly generated, unique link value.
         """
-        value = ''.join(choice(hexdigits) for _ in range(Link.LINK_SIZE))
+        list = (choice(Link.VALID_CHARS) for _ in range(Link.LINK_SIZE))
+        value = ''.join(list)
 
-        while Link.active_links_with_value(value).first():
-            value = ''.join(choice(hexdigits) for _ in range(Link.LINK_SIZE))
+        while Link.active_with_link(value, include_expiration=True).first():
+            list = (choice(Link.VALID_CHARS) for _ in range(Link.LINK_SIZE))
+            value = ''.join(list)
 
         return value
 

@@ -1,3 +1,4 @@
+{% from "_macros.html" import form_item with context %}
 {% extends 'base.html' %}
 
 {% block content %}
@@ -8,15 +9,13 @@
     </div>
     <div class="card-body">
       <form class="form" role="form" action="{{ url_for('auth.login') }}" method="post">
+        {{ form_item(form.user_id, form.errors.user_id) }}
+        {{ form_item(form.password, form.errors.password) }}
+
         <div class="mb-3">
-          {{form.user_id.label}}
-          {{form.user_id(class='form-control')}}
+          {{form.submit(class='btn btn-primary')}}
         </div>
-        <div class="mb-3">
-          {{form.password.label}}
-          {{form.password(class='form-control')}}
-        </div>
-        {{form.submit(class='btn btn-primary')}}
+
         <p>Don't have an account? <a href="{{ url_for('auth.register') }}">Register</a>.</p>
       </form>
     </div>

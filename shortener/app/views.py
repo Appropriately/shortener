@@ -27,7 +27,7 @@ def link(route: str):
     """
 
     start_time = datetime.now()
-    link = Link.active_links_with_value(route).first()
+    link = Link.active_with_link(route, include_expiration=True).first()
 
     model = Request(start=start_time, route=route)
     if link:

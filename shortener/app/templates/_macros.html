@@ -1,1 +1,24 @@
-<!-- Put your reusable template code into macros here -->
+{% macro nav_link(endpoint, text) %}
+<li class="nav-item">
+  {% if request.endpoint and request.endpoint.endswith(endpoint) %}
+    <a class="nav-link active" aria-current="page" href="{{ url_for(endpoint) }}">{{text}}</a>
+  {% else %}
+    <a class="nav-link" href="{{ url_for(endpoint) }}">{{text}}</a>
+  {% endif %}
+</li>
+{% endmacro %}
+
+{% macro form_item(item, errors, hint=None) %}
+<div class="mb-3">
+  {{ item.label(class='form-label') }}
+  {{ item(class='form-control is-invalid' if errors else 'form-control') }}
+  {% if hint %}
+    <div class="form-text">
+      {{ hint }}
+    </div>
+  {% endif %}
+  {% for error in errors %}
+    <small class="invalid-feedback">{{ error }}</small>
+  {% endfor %}
+</div>
+{% endmacro %}

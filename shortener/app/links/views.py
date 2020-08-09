@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, flash, url_for, redirect
 from flask_login import login_required
 from flask_breadcrumbs import register_breadcrumb, default_breadcrumb_root
 
-from .forms import QuickLinkForm
+from .forms import QuickLinkForm, LinkForm
 from .models import Link
 
 links_blueprint = Blueprint('links', __name__)
@@ -13,7 +13,24 @@ default_breadcrumb_root(links_blueprint, '.')
 @register_breadcrumb(links_blueprint, '.dashboard.value', 'Link')
 def link(value: int):
     link = Link.find_by_id(value).first()
-    return render_template('links/link.html', link=link)
+
+    if not link:
+        flash(f"A link with the id '{ value }' does not exist.", 'danger')
+        return redirect(url_for('links.dashboard'), code=307)
+
+    form = LinkForm(obj=link)
+    if form.validate_on_submit():
+        link.link = form.link.data
+        link.redirect = form.redirect.data
+        link.expiration = form.expiration.data
+        link.activated = form.activated.data
+        link.save()
+
+        flash(f"The link '{link.link}' was updated.", 'success')
+    elif form.is_submitted():
+        flash('The given URL was invalid.', 'danger')
+
+    return render_template('links/link.html', form=form, link=link)
 
 
 @links_blueprint.route('/dashboard', methods=['GET', 'POST'])
