@@ -34,7 +34,6 @@ def link(value: int):
 
 
 @links_blueprint.route('/dashboard', methods=['GET', 'POST'])
-@login_required
 @register_breadcrumb(links_blueprint, '.dashboard', 'Dashboard')
 def dashboard():
     form = QuickLinkForm(request.form)
@@ -49,3 +48,12 @@ def dashboard():
 
     links = Link.query.all()[:5]
     return render_template('links/dashboard.html', form=form, links=links)
+
+
+@links_blueprint.before_request
+@login_required
+def before_request():
+    """Function performed before any request related to this breadcrumb.
+    Stops the user from continuing if they aren't currently authenticated.
+    """
+    pass
