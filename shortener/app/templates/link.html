@@ -1,35 +1,48 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section class="py-5">
+<section class="p-5">
   <div class="text-center">
     <h2>Oh no!</h2>
     <h4>The link '{{request.route}}' appears to have gone...</h4>
+    <p class="lead">Ensure that you have not misspelled the link. It is also possible that the link has expired.</p>
   </div>
 </section>
 
-<!--
-  Information on the request
-  TODO: Remove this after testing this functionality
--->
 <section class="py-5">
   <div class="container">
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th scope="col">Attribute</th>
-          <th scope="col">Value</th>
-        </tr>
-      </thead>
-      <tbody>
-        {%- for attribute, value in request.__dict__.items() -%}
-          <tr>
-            <td>{{attribute}}</td>
-            <td>{{value}}</td>
-          </tr>
-        {%- endfor -%}
-      </tbody>
-    </table>
+    <div class="card">
+      <div class="card-header" id="header">
+        <h2 class="mb-0">
+          <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse" aria-expanded="true" aria-controls="collapse1">
+            Request information
+          </button>
+        </h2>
+      </div>
+
+      <div id="collapse" class="collapse" aria-labelledby="header">
+        <div class="card-body">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Attribute</th>
+                <th scope="col">Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%- for attribute, value in request.__dict__.items() -%}
+                {%- if attribute in ['id', 'user_agent', 'start', 'route', 'end'] -%}
+                  <tr>
+                    <td>{{attribute}}</td>
+                    <td>{{value}}</td>
+                  </tr>
+                {%- endif -%}
+              {%- endfor -%}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 {% endblock %}
