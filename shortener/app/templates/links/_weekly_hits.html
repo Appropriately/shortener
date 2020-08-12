@@ -1,0 +1,41 @@
+<canvas id="stacked-bar-chart-weekly-hits" class="graph"></canvas>
+<script>
+  var brandColour = getComputedStyle(document.documentElement).getPropertyValue('--primary-brand')
+  var transparentBrandColour = getComputedStyle(document.documentElement).getPropertyValue('--primary-brand-transparency')
+  var semiTransparentBrandColour = getComputedStyle(document.documentElement).getPropertyValue('--primary-brand-semi-transparency')
+  var secondaryBrandColour = getComputedStyle(document.documentElement).getPropertyValue('--secondary-brand')
+  var secondaryTransparentBrandColour = getComputedStyle(document.documentElement).getPropertyValue('--secondary-brand-transparency')
+  var secondarySemiTransparentBrandColour = getComputedStyle(document.documentElement).getPropertyValue('--secondary-brand-semi-transparency')
+
+  var ctx = document.getElementById("stacked-bar-chart-weekly-hits").getContext("2d");
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: [{% for label in labels %}'{{ label }}',{% endfor %}],
+      datasets: [
+        {
+          label: 'Hits', data: {{ hits }}, 
+          backgroundColor: transparentBrandColour,
+          hoverBackgroundColor: semiTransparentBrandColour,
+          borderColor: brandColour,
+          hoverBorderColor: brandColour,
+          borderWidth: 1
+        },
+        {
+          label: 'Misses', data: {{ misses }}, 
+          backgroundColor: secondaryTransparentBrandColour,
+          hoverBackgroundColor: secondarySemiTransparentBrandColour,
+          borderColor: secondaryBrandColour,
+          hoverBorderColor: secondaryBrandColour,
+          borderWidth: 1
+        },
+      ],
+    },
+    options: {
+      scales: {
+        xAxes: [{ stacked: true }],
+        yAxes: [{ stacked: true }]
+      }
+    }
+  });
+</script>

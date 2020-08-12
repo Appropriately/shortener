@@ -19,3 +19,14 @@ $gray-600: darken($base-grey, 9%);
 $gray-700: darken($base-grey, 18%);
 $gray-800: darken($base-grey, 27%);
 $gray-900: darken($base-grey, 36%);
+
+
+:root {
+  --primary-brand: #{rgba($primary, 1)};
+  --primary-brand-transparency: #{rgba($primary, .4)};
+  --primary-brand-semi-transparency: #{rgba($primary, .6)};
+  
+  --secondary-brand: #{rgba($secondary, 1)};
+  --secondary-brand-transparency: #{rgba($secondary, .4)};
+  --secondary-brand-semi-transparency: #{rgba($secondary, .6)};
+}

@@ -118,7 +118,7 @@ class Link(db.Model, ModelMixin):
         query = Link.active().filter(Link.link == route)
 
         if include_expiration:
-            check = Link.expiration.is_(None), Link.expiration < datetime.now()
+            check = Link.expiration.is_(None), Link.expiration > datetime.now()
             query = query.filter(or_(*check))
 
         return query
@@ -158,3 +158,7 @@ class Request(db.Model, ModelMixin):
 
     def __str__(self) -> str:
         return f'<Request: { self._link }, is_hit = { self.is_hit }>'
+
+    @staticmethod
+    def hit() -> BaseQuery:
+        return Request.query.filter(Request.is_hit)

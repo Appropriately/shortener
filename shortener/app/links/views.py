@@ -4,6 +4,7 @@ from flask_breadcrumbs import register_breadcrumb, default_breadcrumb_root
 
 from .forms import QuickLinkForm, LinkForm
 from .models import Link
+from .utils import get_dashboard_data
 
 links_blueprint = Blueprint('links', __name__)
 default_breadcrumb_root(links_blueprint, '.')
@@ -60,8 +61,10 @@ def dashboard():
     elif form.is_submitted():
         flash('The given URL was invalid.', 'danger')
 
-    links = Link.query.all()[:5]
-    return render_template('links/dashboard.html', form=form, links=links)
+    links = Link.query.all()
+    return render_template(
+        'links/dashboard.html', form=form, links=links,
+        data=get_dashboard_data())
 
 
 @links_blueprint.before_request

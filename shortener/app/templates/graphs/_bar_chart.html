@@ -1,0 +1,34 @@
+{% set id = range(1, 100) | random %}
+<canvas id="bar-chart-{{ id }}" class="graph"></canvas>
+<script>
+  var brandColour = getComputedStyle(document.documentElement).getPropertyValue('--primary-brand')
+  var transparentBrandColour = getComputedStyle(document.documentElement).getPropertyValue('--primary-brand-transparency')
+  var semiTransparentBrandColour = getComputedStyle(document.documentElement).getPropertyValue('--primary-brand-semi-transparency')
+
+  var ctx = document.getElementById("bar-chart-{{ id }}").getContext("2d");
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: [{% for label in labels %}'{{ label }}',{% endfor %}],
+      datasets: [{
+        label: '{{ label }}',
+        data: [{% for value in values %}{{ value }},{% endfor %}],
+        backgroundColor: transparentBrandColour,
+        hoverBackgroundColor: semiTransparentBrandColour,
+        borderColor: brandColour,
+        hoverBorderColor: brandColour,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
+</script>
+
