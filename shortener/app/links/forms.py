@@ -19,6 +19,7 @@ class LinkForm(FlaskForm):
     redirect = StringField('Target', validators=[DataRequired(), URL()])
     expiration = DateField('Expiration date', validators=[Optional()])
     activated = BooleanField('Active?')
+    track_requests = BooleanField('Track requests?')
     submit = SubmitField('Submit')
 
     def validate_link(self, field: StringField):

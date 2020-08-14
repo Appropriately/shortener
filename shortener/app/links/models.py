@@ -5,6 +5,7 @@ from sqlalchemy import or_
 from sqlalchemy.orm import validates
 from flask import url_for
 from flask_sqlalchemy import BaseQuery
+from flask_login import current_user
 from datetime import datetime
 from random import choice
 from string import digits, ascii_letters
@@ -21,10 +22,12 @@ class Link(db.Model, ModelMixin):
     VALID_CHARS = digits + ascii_letters + '-_'
 
     id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
     requests = db.relationship('Request', backref='links', lazy=True)
     link = db.Column(db.String, nullable=False)
     redirect = db.Column(db.String(500), nullable=False)
     activated = db.Column(db.Boolean, default=True)
+    track_requests = db.Column(db.Boolean, default=True)
     expiration = db.Column(db.DateTime)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
@@ -79,6 +82,15 @@ class Link(db.Model, ModelMixin):
 
     def __str__(self) -> str:
         return f'<Link: { self.link } -> { self.redirect }>'
+
+    @staticmethod
+    def find_by_current_user() -> BaseQuery:
+        """Get all links for the current user.
+
+        Returns:
+            BaseQuery: results of the performed query.
+        """
+        return Link.query.filter(Link.user_id == current_user.id)
 
     @staticmethod
     def find_by_id(field: int) -> BaseQuery:

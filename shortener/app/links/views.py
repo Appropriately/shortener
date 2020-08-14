@@ -1,5 +1,7 @@
-from flask import Blueprint, render_template, request, flash, url_for, redirect
-from flask_login import login_required
+from flask import (
+    Blueprint, current_app, render_template, request, flash, url_for, redirect
+)
+from flask_login import login_required, current_user
 from flask_breadcrumbs import register_breadcrumb, default_breadcrumb_root
 
 from .forms import QuickLinkForm, LinkForm
@@ -15,7 +17,7 @@ default_breadcrumb_root(links_blueprint, '.')
 def new():
     form = LinkForm(request.form)
     if form.validate_on_submit():
-        link = Link()
+        link = Link(user_id=current_user.id)
         form.populate_obj(link)
         link.save()
 
@@ -53,18 +55,26 @@ def link(value: int):
 def dashboard():
     form = QuickLinkForm(request.form)
     if form.validate_on_submit():
-        link = Link(link=Link.unique_link(), redirect=form.redirect.data)
+        link = Link(
+            link=Link.unique_link(), redirect=form.redirect.data,
+            user_id=current_user.id)
         link.save()
 
         flash(f"Url '{ link.full_link() }' was generated.", 'success')
-        return redirect(url_for('links.link', value=link.id), code=307)
+        return redirect(url_for('links.link', value=link.id))
     elif form.is_submitted():
         flash('The given URL was invalid.', 'danger')
 
-    links = Link.query.all()
+    try:
+        dashboard_data = get_dashboard_data()
+    except Exception as exception:
+        current_app.logger.warning(
+            f'Issue getting data: { exception }. Graphs will be hidden.')
+        dashboard_data = None
+
+    links = Link.find_by_current_user().order_by(Link.activated.desc()).all()
     return render_template(
-        'links/dashboard.html', form=form, links=links,
-        data=get_dashboard_data())
+        'links/dashboard.html', form=form, links=links, data=dashboard_data)
 
 
 @links_blueprint.before_request

@@ -5,6 +5,7 @@ from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_breadcrumbs import Breadcrumbs, register_breadcrumb
+from logging.config import dictConfig
 from werkzeug.exceptions import HTTPException
 
 # instantiate extensions
@@ -18,6 +19,23 @@ def create_app(environment='development'):
     from .auth.views import auth_blueprint
     from .links.views import links_blueprint
     from .auth.models import User, AnonymousUser
+
+    # Setup configuration
+    dictConfig({
+        'version': 1,
+        'formatters': {'default': {
+            'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s',
+        }},
+        'handlers': {'wsgi': {
+            'class': 'logging.StreamHandler',
+            'stream': 'ext://flask.logging.wsgi_errors_stream',
+            'formatter': 'default'
+        }},
+        'root': {
+            'level': 'INFO',
+            'handlers': ['wsgi']
+        }
+    })
 
     # Instantiate app.
     app = Flask(__name__)

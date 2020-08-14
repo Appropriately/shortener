@@ -1,10 +1,22 @@
 {% extends "base.html" %}
 
 {% block content %}
-{%- if current_user.is_authenticated -%}
-  <section>
-    <div class="container">
-      <div class="row">
+<section>
+  <div class="container py-5">
+    <h4 class="m-0 no-overflow color-secondary">
+      https://stackoverflow.com/questions/4727226/how-does-oauth-2-protect-against-things-like-replay-attacks-using-the-security-t/32534239#32534239
+    </h4>
+    <p class="lead">Wouldn't a short, sweet, and memorable link work a lot better?</p>
+    <h1 class="m-0">
+      your.url/l/<span class="text-primary">get_to_the_point</span>
+    </h1>
+  </div>
+</section>
+
+<section>
+  <div class="container py-5">
+    <div class="row">
+      {%- if current_user.is_authenticated -%}
         <div class="col-md-8 p-2">
           <div class="card p-3 align-middle">
             <h3>Dashboard</h3>
@@ -15,8 +27,27 @@
         <div class="col-md-4 p-2 d-none d-md-flex">
           <i class="fas fa-chart-bar fa-10x m-auto text-secondary"></i>
         </div>
-      </div>
+      {%- else -%}
+        <div class="col-md-4 p-2 d-flex">
+          <div class="card p-3 w-100">
+            <h3><i class="fas fa-compress-alt mr-3"></i>Shorthand links</h3>
+            <p class="lead">Obscure urls using shorthand text, tracking their use.</p>
+          </div>
+        </div>
+        <div class="col-md-4 p-2 d-flex">
+          <div class="card p-3 w-100">
+            <h3><i class="fas fa-edit mr-3"></i>Customisable</h3>
+            <p class="lead">Change the shorthand text, set expiration dates and, temporarily disable links.</p>
+          </div>
+        </div>
+        <div class="col-md-4 p-2 d-flex">
+          <div class="card p-3 w-100">
+            <h3><i class="fas fa-chart-bar mr-3"></i>Dashboarding</h3>
+            <p class="lead">View data and analysis on how well your shorthand links are working.</p>
+          </div>
+        </div>
+      {%- endif -%}
     </div>
-  </section>
-{%- endif -%}
+  </div>
+</section>
 {% endblock %}

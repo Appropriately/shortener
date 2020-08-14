@@ -51,26 +51,28 @@
   </div>
 </section>
 
-<section>
-  <div class="container py-4">
-    <div class="row">
-      <div class="col-md-6 p-2">
-        <div class="card p-4">
-          <p class="lead text-center">Weekly hits vs. misses</p>
-          {% with labels=data['hits']['labels'], hits=data['hits']['hits'], misses=data['hits']['misses'] %}
-            {% include "links/_weekly_hits.html" %}
-          {% endwith %}
+{% if data %}
+  <section>
+    <div class="container py-4">
+      <div class="row">
+        <div class="col-md-6 p-2">
+          <div class="card p-4">
+            <p class="lead text-center">Total weekly hits vs. misses</p>
+            {% with labels=data['hits']['labels'], hits=data['hits']['hits'], misses=data['hits']['misses'] %}
+              {% include "links/_weekly_hits.html" %}
+            {% endwith %}
+          </div>
         </div>
-      </div>
-      <div class="col-md-6 p-2">
-        <div class="card p-4">
-          <p class="lead text-center">Hits over the last 7 days</p>
-          {% with label='Daily hits', labels=data['requests']['labels'], values=data['requests']['values'] %}
-            {% include "graphs/_bar_chart.html" %}
-          {% endwith %}
+        <div class="col-md-6 p-2">
+          <div class="card p-4">
+            <p class="lead text-center">Your hits over the last 7 days</p>
+            {% with label='Daily hits', labels=data['requests']['labels'], values=data['requests']['values'] %}
+              {% include "graphs/_bar_chart.html" %}
+            {% endwith %}
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+{% endif %}
 {% endblock %}

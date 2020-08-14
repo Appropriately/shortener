@@ -27,3 +27,9 @@ table {
     opacity: 0.5;
   }
 }
+
+.no-overflow {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

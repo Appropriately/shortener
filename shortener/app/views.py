@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask import render_template, Blueprint, request, redirect
+from flask import current_app, render_template, Blueprint, request, redirect
 from flask_breadcrumbs import register_breadcrumb, default_breadcrumb_root
 
 from .models import Request, Link
@@ -37,9 +37,12 @@ def link(route: str):
     model.user_agent = vars(request.user_agent)
 
     model.end = datetime.now()
-    model.save()
+    if not link or link.track_requests:
+        model.save()
 
     if link:
+        current_app.logger.info(f"Performed redirect for link '{ link.id }'")
         return redirect(link.redirect, code=302)
     else:
+        current_app.logger.info(f"Link with route '{ route }' does not exist")
         return render_template('link.html', request=model)

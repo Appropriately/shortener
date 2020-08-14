@@ -3,7 +3,6 @@ section {
 
   .card {
     background-color: $gray-100;
-    border-bottom: 1px solid $gray-300;
   }
 
   &:nth-child(odd) {
@@ -14,8 +13,6 @@ section {
   &:nth-child(odd) {
     .card {
       background-color: $gray-200;
-      border: 1px solid $gray-300;
-      border-bottom: 0;
     }
   }
 }

@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from .models import Request
+from .models import Request, Link
 
 
 def __increment_dict(key: str, dictionary: dict):
@@ -32,11 +32,16 @@ def get_dashboard_data() -> dict:
         .order_by(Request.end.asc()) \
         .all()
 
+    if not requests:
+        return None
+
     requests_by_date = {}
     hits_week = {}
     misses_week = {}
+    link_ids = [link.id for link in Link.find_by_current_user()]
     for request in requests:
-        if request.is_hit and request.end > (today - timedelta(weeks=1)):
+        in_range = request.end > (today - timedelta(weeks=1))
+        if request.is_hit and in_range and request.link_id in link_ids:
             date = request.end.strftime('%x')
             __increment_dict(date, requests_by_date)
 
