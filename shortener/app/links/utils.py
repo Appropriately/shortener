@@ -17,6 +17,39 @@ def __increment_dict(key: str, dictionary: dict):
         dictionary[key] = 1
 
 
+def get_link_data(link_id: int) -> dict:
+    """Generate dashboard data, that can be used for graph information.
+
+    Args:
+        link_id (int): an id for a particular instance of a link.
+
+    Returns:
+        dict: a dictionary of data that can be fed to chart.js.
+    """
+    data = {}
+
+    requests = Request.find_by_link(link_id).order_by(Request.end.asc()).all()
+
+    if not requests:
+        return None
+
+    browser_count = 0
+    request_by_browser = {}
+    for request in requests:
+        browser = request.user_agent['browser'].capitalize()
+        if browser:
+            browser_count += 1
+            __increment_dict(browser, request_by_browser)
+
+    for key in request_by_browser.keys():
+        request_by_browser[key] = request_by_browser[key] / browser_count * 100
+
+    labels, values = zip(*request_by_browser.items())
+    data['browser'] = {'labels': labels, 'values': values}
+
+    return data
+
+
 def get_dashboard_data() -> dict:
     """Generate dashboard data, that can be used for graph information.
     Currently interprets only the request data from the past 5 weeks.

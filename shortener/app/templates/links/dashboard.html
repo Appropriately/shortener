@@ -37,7 +37,7 @@
           <td scope="row" class="d-none d-md-table-cell">{{ loop.index }}</td>
           <td>{{ link.link }}</td>
           <td class="d-none d-md-table-cell">
-            <a href="{{ link.redirect }}">{{ link.short_redirect() }}...</a>
+            <a class="no-overflow" href="{{ link.redirect }}">{{ link.short_redirect() }}</a>
           </td>
           <td class="d-none d-md-table-cell">{{ link.expiration }}</td>
           <td>{{ link.requests|count }}</td>

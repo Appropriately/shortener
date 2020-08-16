@@ -172,5 +172,17 @@ class Request(db.Model, ModelMixin):
         return f'<Request: { self._link }, is_hit = { self.is_hit }>'
 
     @staticmethod
+    def find_by_link(id: int) -> BaseQuery:
+        """Finds all requests with a particular link_id.
+
+        Args:
+            id (int): the link's ID.
+
+        Returns:
+            BaseQuery: results of the performed query.
+        """
+        return Request.query.filter(Request.link_id == id)
+
+    @staticmethod
     def hit() -> BaseQuery:
         return Request.query.filter(Request.is_hit)

@@ -39,4 +39,21 @@
     {% endwith %}
   </div>
 </section>
+
+<section>
+  <div class="container py-4">
+    <div class="row">
+      {% if data['browser'] %}
+        <div class="col-md-6 p-2">
+          <div class="card p-4">
+            <p class="lead text-center">Browser usage</p>
+            {% with label='Browser (%)', labels=data['browser']['labels'], values=data['browser']['values'] %}
+              {% include "graphs/_bar_chart.html" %}
+            {% endwith %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
 {% endblock %}

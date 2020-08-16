@@ -72,7 +72,6 @@ def create_app(environment='development'):
 
     # Error handlers.
     @app.errorhandler(HTTPException)
-    @register_breadcrumb(app, '.error', 'Error')
     def handle_http_error(exc):
         return render_template('error.html', error=exc), exc.code
 
