@@ -4,7 +4,7 @@ import sass
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from flask_breadcrumbs import Breadcrumbs, register_breadcrumb
+from flask_breadcrumbs import Breadcrumbs
 from logging.config import dictConfig
 from werkzeug.exceptions import HTTPException
 
@@ -39,6 +39,8 @@ def create_app(environment='development'):
 
     # Instantiate app.
     app = Flask(__name__)
+    with app.app_context():
+        from .filters import humanize_number # noqa
 
     # Compile the SASS
     dirname = ('app/static/sass', 'app/static/css')

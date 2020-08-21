@@ -16,14 +16,14 @@
         <div class="row">
           <div class="col-6 p-2">
             <div class="card p-2 text-center">
-              <h5>Requests</h5>
-              <p class="lead">{{ link.requests|count }}</p>
+              <h5>Total Hits</h5>
+              <p class="lead">{{ link.requests|count|humanize_number }}</p>
             </div>
           </div>
           <div class="col-6 p-2">
             <div class="card p-2 text-center">
-              <h5>METRIC</h5>
-              <p class="lead">DATA</p>
+              <h5>Today's Hits</h5>
+              <p class="lead">{{ link.requests_for_today()|count|humanize_number }}</p>
             </div>
           </div>
         </div>

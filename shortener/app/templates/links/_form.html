@@ -1,27 +1,28 @@
 {% from "_macros.html" import form_item with context %}
 <form role="form" action="{{ action }}" method="post">
   <div class="row">
-    <div class="col-lg-3">
-      {{ form_item(form.link, form.errors.link) }}
+    <div class="col-lg-2">
+      {{ form_item(form.link, form.errors.link, hint='Shorthand URL.') }}
     </div>
-    <div class="col-lg-9">
-      {{ form_item(form.redirect, form.errors.redirect) }}
+    <div class="col-lg-7">
+      {{ form_item(form.redirect, form.errors.redirect, hint='Address to redirect to.') }}
+    </div>
+    <div class="col-lg-3">
+      {{ form_item(form.expiration, form.errors.expiration, hint='Leave blank for no expiration.') }}
     </div>
   </div>
-
-  {{ form_item(form.expiration, form.errors.expiration, hint='Disables the link after the given date. Leave blank for no expiration.') }}
+  
   <div class="mb-3">
-    <div class="form-check">
+    <div class="form-check form-check-inline">
       {{ form.activated(class='form-check-input', type='checkbox') }} 
       <label class="form-check-label">{{ form.activated.label }}</label>
     </div>
-  </div>
-  <div class="mb-3">
-    <div class="form-check">
+    <div class="form-check form-check-inline ml-4">
       {{ form.track_requests(class='form-check-input', type='checkbox') }} 
       <label class="form-check-label">{{ form.track_requests.label }}</label>
     </div>
   </div>
+
   <div class="btn-group" role="group">
     {{ form.submit(class='btn btn-primary btn-block px-4') }}
     {%- if back -%}

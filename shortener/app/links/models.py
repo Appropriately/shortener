@@ -55,6 +55,15 @@ class Link(db.Model, ModelMixin):
 
         return link
 
+    def requests_for_today(self) -> list:
+        """Returns all requests that have been performed today.
+
+        Returns:
+            list: a list of requests objects which ended in the day today.
+        """
+        today = datetime.now().date()
+        return list(filter(lambda x: x.end.date() == today, self.requests))
+
     def is_expired(self) -> bool:
         return self.expiration and datetime.now() >= self.expiration
 
