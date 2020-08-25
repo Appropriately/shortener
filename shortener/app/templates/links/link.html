@@ -53,6 +53,16 @@
           </div>
         </div>
       {% endif %}
+      {% if data['version'] %}
+        <div class="col-md-6 p-2">
+          <div class="card p-4">
+            <p class="lead text-center">Browser version usage</p>
+            {% with label='Browser version (%)', labels=data['version']['labels'], values=data['version']['values'] %}
+              {% include "graphs/_bar_chart.html" %}
+            {% endwith %}
+          </div>
+        </div>
+      {% endif %}
     </div>
   </div>
 </section>

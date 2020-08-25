@@ -29,23 +29,35 @@ def get_link_data(link_id: int) -> dict:
     data = {}
 
     requests = Request.find_by_link(link_id).order_by(Request.end.asc()).all()
-
     if not requests:
         return None
 
-    browser_count = 0
-    request_by_browser = {}
+    count = 0
+    by_browser = {}
+    by_version = {}
     for request in requests:
         browser = request.user_agent['browser'].capitalize()
+        version = request.user_agent['version'].split('.')[0]
+
         if browser:
-            browser_count += 1
-            __increment_dict(browser, request_by_browser)
+            count += 1
+            __increment_dict(browser, by_browser)
+            __increment_dict(f'{browser} {version}', by_version)
 
-    for key in request_by_browser.keys():
-        request_by_browser[key] = request_by_browser[key] / browser_count * 100
+    # Convert by_browser to percentage and split into keys/values.
+    for key in by_browser.keys():
+        by_browser[key] = by_browser[key] / count * 100
 
-    labels, values = zip(*request_by_browser.items())
+    labels, values = zip(*by_browser.items())
     data['browser'] = {'labels': labels, 'values': values}
+
+    # Convert by_version to percentage, sort, and split into keys/values.
+    for key in by_version.keys():
+        by_version[key] = by_version[key] / count * 100
+
+    filtered = sorted(by_version.items(), key=lambda x: x[1], reverse=True)[:5]
+    labels, values = zip(*{k: v for k, v in filtered}.items())
+    data['version'] = {'labels': labels, 'values': values}
 
     return data
 
@@ -91,8 +103,8 @@ def get_dashboard_data() -> dict:
     hit_labels, hit_values = zip(*hits_week.items())
     misses_labels, misses_values = zip(*misses_week.items())
     data['hits'] = {
-        'labels': list(hit_labels),
-        'hits': list(hit_values), 'misses': list(misses_values)
+        'labels': list(hit_labels), 'misses': list(misses_values),
+        'hits': list(hit_values)
     }
 
     return data

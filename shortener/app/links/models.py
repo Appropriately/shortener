@@ -6,7 +6,7 @@ from sqlalchemy.orm import validates
 from flask import url_for
 from flask_sqlalchemy import BaseQuery
 from flask_login import current_user
-from datetime import datetime
+from datetime import datetime, timedelta
 from random import choice
 from string import digits, ascii_letters
 from urllib.parse import urlparse
@@ -179,6 +179,15 @@ class Request(db.Model, ModelMixin):
 
     def __str__(self) -> str:
         return f'<Request: { self._link }, is_hit = { self.is_hit }>'
+
+    def duration(self) -> timedelta:
+        """Returns the difference between the end and start time, as a
+        timedelta value.
+
+        Returns:
+            timedelta: difference between end and start time.
+        """
+        return self.end - self.start
 
     @staticmethod
     def find_by_link(id: int) -> BaseQuery:

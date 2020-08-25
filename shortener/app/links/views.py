@@ -21,7 +21,7 @@ def new():
         form.populate_obj(link)
         link.save()
 
-        flash(f"The link '{link.link}' was created.", 'success')
+        flash(f'The link \'{link.link}\' was created.', 'success')
         return redirect(url_for('links.link', value=link.id))
     elif form.is_submitted():
         flash('There was a problem with the form submission.', 'danger')
@@ -35,7 +35,7 @@ def link(value: int):
     link = Link.find_by_id(value).first()
 
     if not link:
-        flash(f"A link with the id '{ value }' does not exist.", 'danger')
+        flash(f'A link with the id \'{ value }\' does not exist.', 'danger')
         return redirect(url_for('links.dashboard'))
 
     form = LinkForm(obj=link)
@@ -43,7 +43,7 @@ def link(value: int):
         form.populate_obj(link)
         link.update()
 
-        flash(f"The link '{link.link}' was updated.", 'success')
+        flash(f'The link \'{link.link}\' was updated.', 'success')
     elif form.is_submitted():
         flash('The given URL was invalid.', 'danger')
 
@@ -61,16 +61,15 @@ def dashboard():
             user_id=current_user.id)
         link.save()
 
-        flash(f"Url '{ link.full_link() }' was generated.", 'success')
+        flash(f'Url \'{ link.full_link() }\' was generated.', 'success')
         return redirect(url_for('links.link', value=link.id))
     elif form.is_submitted():
         flash('The given URL was invalid.', 'danger')
 
     try:
         dashboard_data = get_dashboard_data()
-    except Exception as exception:
-        current_app.logger.warning(
-            f'Issue getting data: { exception }. Graphs will be hidden.')
+    except Exception as e:
+        current_app.logger.warning(f'There was a problem: {e}. Hiding graphs.')
         dashboard_data = None
 
     links = Link.find_by_current_user().order_by(Link.activated.desc()).all()

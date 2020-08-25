@@ -40,6 +40,7 @@ def link(route: str):
     if not link or link.track_requests:
         model.save()
 
+    current_app.logger.debug(f'Took { model.duration().microseconds / 1e6 }s')
     if link:
         current_app.logger.info(f"Performed redirect for link '{ link.id }'")
         return redirect(link.redirect, code=302)
