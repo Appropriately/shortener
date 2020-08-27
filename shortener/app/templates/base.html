@@ -49,6 +49,7 @@
           </ul>
           <div class="navbar-nav d-flex">
             {%- if current_user.is_authenticated -%}
+              {{ nav_link('auth.profile', current_user.username + '\'s Profile') }}
               {{ nav_link('auth.logout', 'Logout') }}
             {%- else -%}
               {{ nav_link('auth.login', 'Login') }}

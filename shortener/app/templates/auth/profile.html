@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section>
+  <div class="container py-5">
+    <h2>{{ current_user.username }}</h2>
+    <h3 class="text-muted">{{ current_user.email }}</h3>
+  </div>
+</section>
+
+<section>
+  <div class="container py-5">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Attribute</th>
+          <th scope="col">Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Created At</td>
+          <td>{{ current_user.created_at }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

@@ -5,8 +5,14 @@ from flask_breadcrumbs import register_breadcrumb, default_breadcrumb_root
 from .models import User
 from .forms import LoginForm, RegistrationForm
 
-auth_blueprint = Blueprint('auth', __name__)
+auth_blueprint = Blueprint('auth', __name__, url_prefix='/auth')
 default_breadcrumb_root(auth_blueprint, '.')
+
+
+@auth_blueprint.route('/profile', methods=['GET'])
+@register_breadcrumb(auth_blueprint, '.profile', 'Profile')
+def profile():
+    return render_template('auth/profile.html')
 
 
 @auth_blueprint.route('/register', methods=['GET', 'POST'])
