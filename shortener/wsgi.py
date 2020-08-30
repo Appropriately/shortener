@@ -25,5 +25,19 @@ def drop_db():
     db.drop_all()
 
 
+@app.cli.command()
+@click.argument('username')
+@click.argument('email')
+@click.argument('password')
+def create_admin_user(username: str, email: str, password: str):
+    """Create an admin. Requires a username, email, and password."""
+    try:
+        user = models.User(username=username, email=email, password=password)
+        user.is_admin = True
+        user.save()
+    except Exception as e:
+        print('There was an issue creating the user: ' + str(e))
+
+
 if __name__ == '__main__':
     app.run()

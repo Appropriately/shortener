@@ -19,8 +19,12 @@
       </thead>
       <tbody>
         <tr>
-          <td>Created At</td>
-          <td>{{ current_user.created_at }}</td>
+          <td>Date of creation</td>
+          <td>{{ current_user.created_at.strftime('%B %d %Y, %H:%M:%S') }}</td>
+        </tr>
+        <tr>
+          <td>Is admin?</td>
+          <td>{{ 'Yes' if current_user.is_admin else 'No' }}</td>
         </tr>
       </tbody>
     </table>
