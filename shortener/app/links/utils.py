@@ -83,6 +83,7 @@ def get_dashboard_data() -> dict:
     requests_by_date = {}
     hits_week = {}
     misses_week = {}
+    bots_week = {}
     link_ids = [link.id for link in Link.find_by_current_user()]
     for request in requests:
         in_range = request.end > (today - timedelta(weeks=1))
@@ -95,16 +96,21 @@ def get_dashboard_data() -> dict:
             hits_week[week] = 0
         if week not in misses_week:
             misses_week[week] = 0
+        if week not in bots_week:
+            bots_week[week] = 0
         __increment_dict(week, hits_week if request.is_hit else misses_week)
+        if request.is_bot:
+            __increment_dict(week, bots_week)
 
     labels, values = zip(*requests_by_date.items())
     data['requests'] = {'labels': labels, 'values': values}
 
     hit_labels, hit_values = zip(*hits_week.items())
     misses_labels, misses_values = zip(*misses_week.items())
+    bots_labels, bots_values = zip(*bots_week.items())
     data['hits'] = {
         'labels': list(hit_labels), 'misses': list(misses_values),
-        'hits': list(hit_values)
+        'hits': list(hit_values), 'bots': list(bots_values)
     }
 
     return data

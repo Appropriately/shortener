@@ -29,4 +29,8 @@ $gray-900: darken($base-grey, 36%);
   --secondary-brand: #{rgba($secondary, 1)};
   --secondary-brand-transparency: #{rgba($secondary, .4)};
   --secondary-brand-semi-transparency: #{rgba($secondary, .6)};
+  
+  --base-grey-brand: #{rgba($base-grey, 1)};
+  --base-grey-brand-transparency: #{rgba($base-grey, .4)};
+  --base-grey-brand-semi-transparency: #{rgba($base-grey, .6)};
 }

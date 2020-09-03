@@ -173,6 +173,7 @@ class Request(db.Model, ModelMixin):
     link_id = db.Column(db.Integer, db.ForeignKey('links.id'), nullable=True)
     route = db.Column(db.String, nullable=False)
     is_hit = db.Column(db.Boolean, default=False)
+    is_bot = db.Column(db.Boolean, default=False)
     start = db.Column(db.DateTime, nullable=False)
     end = db.Column(db.DateTime, nullable=False)
     user_agent = db.Column(db.PickleType)

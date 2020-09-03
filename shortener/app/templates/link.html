@@ -31,7 +31,7 @@
             </thead>
             <tbody>
               {%- for attribute, value in request.__dict__.items() -%}
-                {%- if attribute in ['id', 'user_agent', 'start', 'route', 'end'] -%}
+                {%- if attribute in ['id', 'user_agent', 'start', 'route', 'end', 'is_bot'] -%}
                   <tr>
                     <td>{{attribute}}</td>
                     <td>{{value}}</td>
