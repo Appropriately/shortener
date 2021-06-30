@@ -72,7 +72,7 @@ def dashboard():
         current_app.logger.warning(f'There was a problem: {e}. Hiding graphs.')
         dashboard_data = None
 
-    links = Link.find_by_current_user().order_by(Link.activated.desc()).all()
+    links = current_user.links()
     return render_template(
         'links/dashboard.html', form=form, links=links, data=dashboard_data)
 

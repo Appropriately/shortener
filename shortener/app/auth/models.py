@@ -4,7 +4,7 @@ from flask_login import UserMixin, AnonymousUserMixin
 from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from .. import db
+from .. import db, models
 from ..utils import ModelMixin
 
 
@@ -20,12 +20,25 @@ class User(db.Model, UserMixin, ModelMixin):
     created_at = db.Column(db.DateTime, default=datetime.now)
 
     @hybrid_property
-    def password(self):
+    def password(self) -> str:
         return self.password_hash
 
     @password.setter
-    def password(self, password):
+    def password(self, password: str):
         self.password_hash = generate_password_hash(password)
+
+    def links(self) -> list:
+        """[summary]
+
+        Returns:
+            list: [description]
+        """
+        if self.is_admin:
+            query = models.Link.query
+        else:
+            query = models.Link.find_by_user_id(self.id)
+
+        return query.order_by(models.Link.activated.desc()).all()
 
     @classmethod
     def authenticate(cls, user_id, password):
@@ -35,7 +48,7 @@ class User(db.Model, UserMixin, ModelMixin):
         if user is not None and check_password_hash(user.password, password):
             return user
 
-    def __str__(self):
+    def __str__(self) -> str:
         return '<User: %s>' % self.username
 
 

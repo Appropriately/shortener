@@ -93,13 +93,25 @@ class Link(db.Model, ModelMixin):
         return f'<Link: { self.link } -> { self.redirect }>'
 
     @staticmethod
+    def find_by_user_id(id: int) -> BaseQuery:
+        """Get all links for the user with the given id.
+
+        Args:
+            id (int): the id of a particular user.
+
+        Returns:
+            BaseQuery: results of the performed query.
+        """
+        return Link.query.filter(Link.user_id == id)
+
+    @staticmethod
     def find_by_current_user() -> BaseQuery:
         """Get all links for the current user.
 
         Returns:
             BaseQuery: results of the performed query.
         """
-        return Link.query.filter(Link.user_id == current_user.id)
+        return Link.find_by_user_id(current_user.id)
 
     @staticmethod
     def find_by_id(field: int) -> BaseQuery:

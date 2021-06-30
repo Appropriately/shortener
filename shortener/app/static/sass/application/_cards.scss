@@ -1,8 +1,14 @@
 section {
-  min-height: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
   .card {
     background-color: $gray-100;
+  }
+
+  &:not(:first-child) {
+    min-height: 150px;
   }
 
   &:nth-child(odd) {

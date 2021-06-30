@@ -1,0 +1,15 @@
+- Test suite?
+- User adjustments
+  - Password change
+  - Experiment adding AD support
+  - Add the concept of admin accounts
+    - should be addable by the flask command
+- /docs
+  - Github pages
+  - Expand information on the site
+- Groups, configurable by admin
+- Configuration page, set user limits
+- Python benchmarking and improve speed
+- Dark mode
+- Include bot information in dashboard
+- Option to disable bots?

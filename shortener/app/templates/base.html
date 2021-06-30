@@ -45,6 +45,9 @@
           <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
             {%- if current_user.is_authenticated -%}
               {{ nav_link('links.dashboard', 'Dashboard') }}
+              {%- if current_user.is_admin -%}
+                {{ nav_link('settings.index', 'Settings') }}
+              {%- endif -%}
             {%- endif -%}
           </ul>
           <div class="navbar-nav d-flex">
@@ -65,20 +68,22 @@
     <section>
       {% block hero %}{% endblock %}
 
-      <div class="py-2 container">
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb">
-            {%- if breadcrumbs -%}
-              {%- for breadcrumb in breadcrumbs -%}
-                {%- if loop.last -%}
-                  <li class="breadcrumb-item active" aria-current="page">{{ breadcrumb.text }}</li>
-                {%- else -%}
-                  <li class="breadcrumb-item"><a href="{{ breadcrumb.url }}">{{ breadcrumb.text }}</a></li>
-                {%- endif -%}
-              {%- endfor -%}
-            {%- endif -%}
-          </ol>
-        </nav>
+      <div class="container">
+        {%- if current_user.is_authenticated -%}
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              {%- if breadcrumbs -%}
+                {%- for breadcrumb in breadcrumbs -%}
+                  {%- if loop.last -%}
+                    <li class="breadcrumb-item active" aria-current="page">{{ breadcrumb.text }}</li>
+                  {%- else -%}
+                    <li class="breadcrumb-item"><a href="{{ breadcrumb.url }}">{{ breadcrumb.text }}</a></li>
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endif -%}
+            </ol>
+          </nav>
+        {%- endif -%}
 
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}

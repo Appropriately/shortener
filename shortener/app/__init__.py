@@ -17,6 +17,7 @@ def create_app(environment='development'):
     from config import config
     from .views import main_blueprint
     from .auth.views import auth_blueprint
+    from .settings.views import settings_blueprint
     from .links.views import links_blueprint
     from .auth.models import User, AnonymousUser
 
@@ -61,6 +62,7 @@ def create_app(environment='development'):
     # Register blueprints.
     app.register_blueprint(links_blueprint)
     app.register_blueprint(auth_blueprint)
+    app.register_blueprint(settings_blueprint)
     app.register_blueprint(main_blueprint)
 
     # Set up flask login.

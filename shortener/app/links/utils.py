@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
+from flask_login import current_user
 
-from .models import Request, Link
+from .models import Request
 
 
 def __increment_dict(key: str, dictionary: dict):
@@ -84,7 +85,7 @@ def get_dashboard_data() -> dict:
     hits_week = {}
     misses_week = {}
     bots_week = {}
-    link_ids = [link.id for link in Link.find_by_current_user()]
+    link_ids = [link.id for link in current_user.links()]
     for request in requests:
         in_range = request.end > (today - timedelta(weeks=1))
         if request.is_hit and in_range and request.link_id in link_ids:
